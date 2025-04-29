@@ -1,0 +1,18 @@
+## You can prepend rules to dynamic chains,
+## pre-empting offload by accepting packets
+## that do not need offload processing for
+## e.g IDS, games or bugs
+## Use only a single rule that seems to address the needs.
+
+#chain handle_offload {
+#	ct bytes < 1000000 counter accept
+#	ct packets < 30 counter accept
+#	ct original proto-dst 3074 counter accept
+#	ct protocol udp counter accept
+#	meta nfproto . meta l4proto { ipv4 . icmp, ipv6 . iipv6-icmp } counter accept
+#}
+
+##	the fw4 offload table follows when enabled
+##	flow add @ft accept
+##	accept
+
