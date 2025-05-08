@@ -53,7 +53,7 @@
 # }
 #
 # chain trace_chain {
-#     meta l4proto {tcp,udp} th dport 53 meta nftrace set 1
+#     meta l4proto {tcp,udp} th sport . th dport { 53 . 0-65535, 0-65535 . 53 } meta nftrace set 1
 #     # meta nftrace set 1
 # }
 
