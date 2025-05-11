@@ -37,6 +37,7 @@ start() {
 
 		ACTION=includes \
 			utpl -S $MAIN
+		[ -n "$CTFLUSH" ] && echo f > /proc/net/nf_conntrack
 	} 1000>$LOCK
 }
 
@@ -95,7 +96,11 @@ while [ -n "$1" ]; do
 done
 
 case "$1" in
-	start|reload)
+	start)
+		nft 'create table inet fw4' 2>/dev/null && export CTFLUSH=1
+		start "$1"
+	;;
+	reload)
 		start "$1"
 	;;
 	stop)
