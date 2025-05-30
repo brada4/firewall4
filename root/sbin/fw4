@@ -60,11 +60,9 @@ flush() {
 	{
 		flock -x 1000
 
-		local dummy family table
-		nft list tables | while read dummy family table; do
-			nft delete table "$family" "$table"
-		done
-
+		nft add table inet fw4
+		nft delete table inet fw4
+		echo f > /proc/net/nf_conntrack
 		rm -f $STATE
 	} 1000>$LOCK
 }
