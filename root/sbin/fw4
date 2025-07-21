@@ -1,6 +1,7 @@
 #!/bin/sh
 
 set -o pipefail
+export TZ=Z
 
 MAIN=/usr/share/firewall4/main.uc
 LOCK=/var/run/fw4.lock
