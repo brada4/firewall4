@@ -223,6 +223,7 @@ table inet fw4 {
 
 	chain raw_prerouting {
 		type filter hook prerouting priority raw; policy accept;
+		rt type 0 counter drop
 		iifname "eth0" jump notrack_zone1 comment "!fw4: Handle zone1 IPv4/IPv6 notrack traffic"
 	}
 

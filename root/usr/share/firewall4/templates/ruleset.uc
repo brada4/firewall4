@@ -363,6 +363,7 @@ table inet fw4 {
 
 	chain raw_prerouting {
 		type filter hook prerouting priority raw; policy accept;
+		rt type 0 counter drop
 {% for (let zone in fw4.zones()): %}
 {%  if (zone.dflags["notrack"]): %}
 {%   for (let rule in zone.match_rules): %}

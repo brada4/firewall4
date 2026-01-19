@@ -168,6 +168,7 @@ table inet fw4 {
 
 	chain raw_prerouting {
 		type filter hook prerouting priority raw; policy accept;
+		rt type 0 counter drop
 	}
 
 	chain raw_output {
