@@ -310,6 +310,7 @@ table inet fw4 {
 {% for (let redirect in fw4.redirects("srcnat")): %}
 		{%+ include("redirect.uc", { fw4, zone: null, redirect }) %}
 {% endfor %}
+		iif 0 return
 {% for (let zone in fw4.zones()): %}
 {%  if (zone.dflags.snat): %}
 {%   for (let rule in zone.match_rules): %}

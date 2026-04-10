@@ -284,6 +284,7 @@ table inet fw4 {
 
 	chain srcnat {
 		type nat hook postrouting priority srcnat; policy accept;
+		iif 0 return
 		oifname "pppoe-wan" jump srcnat_wan comment "!fw4: Handle wan IPv4/IPv6 srcnat traffic"
 		oifname "br-lan" jump srcnat_lan comment "!fw4: Handle lan IPv4/IPv6 srcnat traffic"
 		oifname "wwan0" jump srcnat_noaddr comment "!fw4: Handle noaddr IPv4/IPv6 srcnat traffic"

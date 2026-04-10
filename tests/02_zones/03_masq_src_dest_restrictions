@@ -206,6 +206,7 @@ table inet fw4 {
 
 	chain srcnat {
 		type nat hook postrouting priority srcnat; policy accept;
+		iif 0 return
 		oifname "zone1" jump srcnat_test1 comment "!fw4: Handle test1 IPv4/IPv6 srcnat traffic"
 		oifname "zone2" jump srcnat_test2 comment "!fw4: Handle test2 IPv4/IPv6 srcnat traffic"
 	}
