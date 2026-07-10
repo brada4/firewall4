@@ -90,20 +90,20 @@ table inet fw4 {
 	# Defines
 	#
 
-	define test1_devices = { "+" }
-	define test1_subnets = {  }
+	redefine test1_devices = { "+" }
+	redefine test1_subnets = {  }
 
-	define test2_devices = { "/never/" }
-	define test2_subnets = {  }
+	redefine test2_devices = { "/never/" }
+	redefine test2_subnets = {  }
 
-	define test3_devices = { "test*" }
-	define test3_subnets = {  }
+	redefine test3_devices = { "test*" }
+	redefine test3_subnets = {  }
 
-	define test4_devices = { "foo*", "bar*", "test1", "test2" }
-	define test4_subnets = {  }
+	redefine test4_devices = { "foo*", "bar*", "test1", "test2" }
+	redefine test4_subnets = {  }
 
-	define test5_devices = { "foo*", "bar*", "test1", "test2" }
-	define test5_subnets = {  }
+	redefine test5_devices = { "foo*", "bar*", "test1", "test2" }
+	redefine test5_subnets = {  }
 
 
 	#

@@ -77,14 +77,14 @@ table inet fw4 {
 	# Defines
 	#
 
-	define zone1_devices = { "eth0" }
-	define zone1_subnets = {  }
+	redefine zone1_devices = { "eth0" }
+	redefine zone1_subnets = {  }
 
-	define zone2_devices = { "lo" }
-	define zone2_subnets = {  }
+	redefine zone2_devices = { "lo" }
+	redefine zone2_subnets = {  }
 
-	define zone3_devices = {  }
-	define zone3_subnets = { 127.0.0.0/8, ::1 }
+	redefine zone3_devices = {  }
+	redefine zone3_subnets = { 127.0.0.0/8, ::1 }
 
 
 	#

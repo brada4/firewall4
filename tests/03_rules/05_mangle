@@ -155,11 +155,11 @@ table inet fw4 {
 	# Defines
 	#
 
-	define lan_devices = { "eth0", "eth1" }
-	define lan_subnets = {  }
+	redefine lan_devices = { "eth0", "eth1" }
+	redefine lan_subnets = {  }
 
-	define wan_devices = { "eth2", "eth3" }
-	define wan_subnets = {  }
+	redefine wan_devices = { "eth2", "eth3" }
+	redefine wan_subnets = {  }
 
 
 	#

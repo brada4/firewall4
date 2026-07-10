@@ -58,11 +58,11 @@ table inet fw4 {
 	# Defines
 	#
 
-	define test1_devices = {  }
-	define test1_subnets = {  }
+	redefine test1_devices = {  }
+	redefine test1_subnets = {  }
 
-	define test2_devices = {  }
-	define test2_subnets = { ::3, ::4 }
+	redefine test2_devices = {  }
+	redefine test2_subnets = { ::3, ::4 }
 
 
 	#

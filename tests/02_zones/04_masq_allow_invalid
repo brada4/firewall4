@@ -51,8 +51,8 @@ table inet fw4 {
 	# Defines
 	#
 
-	define test1_devices = { "zone1" }
-	define test1_subnets = {  }
+	redefine test1_devices = { "zone1" }
+	redefine test1_subnets = {  }
 
 
 	#

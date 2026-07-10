@@ -101,23 +101,23 @@ table inet fw4 {
 	# Defines
 	#
 
-	define test1_devices = {  }
-	define test1_subnets = { 10.0.0.0/8 }
+	redefine test1_devices = {  }
+	redefine test1_subnets = { 10.0.0.0/8 }
 
-	define test2_devices = {  }
-	define test2_subnets = { 2001:db8:1234::/64 }
+	redefine test2_devices = {  }
+	redefine test2_subnets = { 2001:db8:1234::/64 }
 
-	define test3_devices = {  }
-	define test3_subnets = { 2001:db8:1234::/64 }
+	redefine test3_devices = {  }
+	redefine test3_subnets = { 2001:db8:1234::/64 }
 
-	define test4_devices = {  }
-	define test4_subnets = { 2001:db8:1234::/64 }
+	redefine test4_devices = {  }
+	redefine test4_subnets = { 2001:db8:1234::/64 }
 
-	define test5_devices = { "eth0" }
-	define test5_subnets = {  }
+	redefine test5_devices = { "eth0" }
+	redefine test5_subnets = {  }
 
-	define test6_devices = { "br-lan" }
-	define test6_subnets = {  }
+	redefine test6_devices = { "br-lan" }
+	redefine test6_subnets = {  }
 
 
 	#

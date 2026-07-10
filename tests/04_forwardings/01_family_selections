@@ -66,14 +66,14 @@ table inet fw4 {
 	# Defines
 	#
 
-	define wanA_devices = { "eth0" }
-	define wanA_subnets = {  }
+	redefine wanA_devices = { "eth0" }
+	redefine wanA_subnets = {  }
 
-	define wanB_devices = { "eth1" }
-	define wanB_subnets = {  }
+	redefine wanB_devices = { "eth1" }
+	redefine wanB_subnets = {  }
 
-	define lan_devices = { "eth2" }
-	define lan_subnets = {  }
+	redefine lan_devices = { "eth2" }
+	redefine lan_subnets = {  }
 
 
 	#

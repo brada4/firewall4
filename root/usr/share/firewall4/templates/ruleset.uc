@@ -78,8 +78,8 @@ table inet fw4 {
 	#
 
 {% for (let zone in fw4.zones()): %}
-	define {{ replace(zone.name, /^[0-9]/, '_$&') }}_devices = {{ fw4.set(zone.match_devices, true) }}
-	define {{ replace(zone.name, /^[0-9]/, '_$&') }}_subnets = {{ fw4.set(zone.match_subnets, true) }}
+	redefine {{ replace(zone.name, /^[0-9]/, '_$&') }}_devices = {{ fw4.set(zone.match_devices, true) }}
+	redefine {{ replace(zone.name, /^[0-9]/, '_$&') }}_subnets = {{ fw4.set(zone.match_subnets, true) }}
 
 {% endfor %}
 

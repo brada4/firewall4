@@ -99,11 +99,11 @@ table inet fw4 {
 	# Defines
 	#
 
-	define test1_devices = { "zone1" }
-	define test1_subnets = {  }
+	redefine test1_devices = { "zone1" }
+	redefine test1_subnets = {  }
 
-	define test2_devices = { "zone2" }
-	define test2_subnets = {  }
+	redefine test2_devices = { "zone2" }
+	redefine test2_subnets = {  }
 
 
 	#
