@@ -106,16 +106,45 @@ table inet fw4 {
 
 
 	#
+	# vmap gadgets
+	#
+
+	chain input_states {
+		ct state vmap { invalid counter :{% if (fw4.default_option("drop_invalid")):%} drop{%else%} return{% endif %}, new : return, established : accept, related : accept, untracked : return }
+		counter drop
+	}
+
+	chain forward_states {
+		ct state vmap { invalid counter :{% if (fw4.default_option("drop_invalid")):%} drop{%else%} return{% endif %}, new : return, established : goto handle_offload, related :{% if (fw4.default_option("flow_offloading_related")): %} goto handle_offload{%else%} accept{%endif%}, untracked : return }
+		counter drop
+	}
+
+	chain output_states {
+		ct state vmap { invalid counter :{% if (fw4.default_option("drop_invalid")):%} drop{%else%} return{% endif %}, new : return, established : accept, related : accept, untracked : return }
+		counter drop
+	}
+
+	chain drop_invalid {
+		ct state vmap { invalid counter : drop, new : return, established : return, related : return, untracked : return }
+		counter drop
+	}
+
+	chain handle_offload {
+	{% if (length(flowtable_devices) > 0): %}
+		flow add @ft accept
+	{% endif %}
+		accept
+	}
+
+	#
 	# Filter rules
 	#
 
 	chain input {
 		type filter hook input priority filter; policy {{ fw4.input_policy(true) }};
-
-		iif "lo" accept comment "!fw4: Accept traffic from loopback"
-
 {% fw4.includes('chain-prepend', 'input') %}
-		ct state vmap { established : accept, related : accept{% if (fw4.default_option("drop_invalid")): %}, invalid : drop{% endif %} } comment "!fw4: Handle inbound flows"
+		jump input_states
+		iif "lo" accept comment "!fw4: Accept traffic from loopback"
 {% if (fw4.default_option("synflood_protect") && fw4.default_option("synflood_rate")): %}
 		tcp flags & (fin | syn | rst | ack) == syn jump syn_flood comment "!fw4: Rate limit TCP syn packets"
 {% endif %}
@@ -126,7 +155,7 @@ table inet fw4 {
 		{%+ include("zone-jump.uc", { fw4, zone, rule, direction: "input" }) %}
 {% endfor; endfor %}
 {% if (fw4.input_policy() == "reject"): %}
-		jump handle_reject
+		goto handle_reject
 {% endif %}
 {% fw4.includes('chain-append', 'input') %}
 	}
@@ -134,11 +163,8 @@ table inet fw4 {
 	chain forward {
 		type filter hook forward priority filter; policy {{ fw4.forward_policy(true) }};
 
-{% if (length(flowtable_devices) > 0): %}
-		meta l4proto { tcp, udp } flow offload @ft;
-{% endif %}
 {% fw4.includes('chain-prepend', 'forward') %}
-		ct state vmap { established : accept, related : accept{% if (fw4.default_option("drop_invalid")): %}, invalid : drop{% endif %} } comment "!fw4: Handle forwarded flows"
+		jump forward_states
 {% for (let rule in fw4.rules("forward")): %}
 		{%+ include("rule.uc", { fw4, zone: (rule.src?.zone?.log_limit ? rule.src.zone : rule.dest?.zone), rule }) %}
 {% endfor %}
@@ -147,17 +173,15 @@ table inet fw4 {
 {% endfor; endfor %}
 {% fw4.includes('chain-append', 'forward') %}
 {% if (fw4.forward_policy() == "reject"): %}
-		jump handle_reject
+		goto handle_reject
 {% endif %}
 	}
 
 	chain output {
 		type filter hook output priority filter; policy {{ fw4.output_policy(true) }};
-
-		oif "lo" accept comment "!fw4: Accept traffic towards loopback"
-
 {% fw4.includes('chain-prepend', 'output') %}
-		ct state vmap { established : accept, related : accept{% if (fw4.default_option("drop_invalid")): %}, invalid : drop{% endif %} } comment "!fw4: Handle outbound flows"
+		jump output_states
+		oif "lo" accept comment "!fw4: Accept traffic towards loopback"
 {% for (let rule in fw4.rules("output")): %}
 		{%+ include("rule.uc", { fw4, zone: null, rule }) %}
 {% endfor %}
@@ -175,7 +199,7 @@ table inet fw4 {
 {% endfor %}
 {% fw4.includes('chain-append', 'output') %}
 {% if (fw4.output_policy() == "reject"): %}
-		jump handle_reject
+		goto handle_reject
 {% endif %}
 	}
 
@@ -195,6 +219,9 @@ table inet fw4 {
 	}
 
 	chain handle_reject {
+{% if (!fw4.default_option("drop_invalid")): %}
+		jump drop_invalid
+{% endif %}
 		meta l4proto tcp reject with {{
 			(fw4.default_option("tcp_reject_code") != "tcp-reset")
 				? `icmpx type ${fw4.default_option("tcp_reject_code")}`
